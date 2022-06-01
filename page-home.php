@@ -1,11 +1,8 @@
 <?php
 /**
- * The template for displaying all pages
+ * Template name: Homepage
  *
- * This is the template that displays all pages by default.
- * Please note that this is the WordPress construct of pages
- * and that other 'pages' on your WordPress site may use a
- * different template.
+ * This is the template that displays Homepage template.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  *

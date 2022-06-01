@@ -6,58 +6,19 @@
  *
  * @package Rubberband_2022
  */
-
+ $featured = wp_get_attachment_image_src(  get_post_thumbnail_id( $post->ID ), 'full-size' );
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header">
-		<?php
-		if ( is_singular() ) :
-			the_title( '<h1 class="entry-title">', '</h1>' );
-		else :
-			the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-		endif;
-
-		if ( 'post' === get_post_type() ) :
-			?>
-			<div class="entry-meta">
-				<?php
-				rubberband_posted_on();
-				rubberband_posted_by();
-				?>
-			</div><!-- .entry-meta -->
-		<?php endif; ?>
-	</header><!-- .entry-header -->
-
-	<?php rubberband_post_thumbnail(); ?>
-
-	<div class="entry-content">
-		<?php
-		the_content(
-			sprintf(
-				wp_kses(
-					/* translators: %s: Name of current post. Only visible to screen readers */
-					__( 'Continue reading<span class="screen-reader-text"> "%s"</span>', 'rubberband' ),
-					array(
-						'span' => array(
-							'class' => array(),
-						),
-					)
-				),
-				wp_kses_post( get_the_title() )
-			)
-		);
-
-		wp_link_pages(
-			array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'rubberband' ),
-				'after'  => '</div>',
-			)
-		);
-		?>
-	</div><!-- .entry-content -->
-
-	<footer class="entry-footer">
-		<?php rubberband_entry_footer(); ?>
-	</footer><!-- .entry-footer -->
+	<div class="entry-thumbnail" style="background-image: url('<?php echo $featured[0]; ?>');">
+		<a href="<?php the_permalink(); ?>" rel="bookmark"></a>
+		<div class="entry-thumbnail-fitler"></div>
+	</div><!-- .entry-thumbnail -->
+	<div class="entry-meta">
+		<h2 class="entry-title"><a href="<?php the_title(); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+		<?php if(has_excerpt()) { the_excerpt(); } ?>
+		<span class="entry-date"><?php the_time('Y-m-d'); ?></span> 
+		<span class="by">by</span> 
+		<span class="entry-author"><?php the_author_posts_link(); ?></span>
+	</div><!-- .entry-meta -->
 </article><!-- #post-<?php the_ID(); ?> -->

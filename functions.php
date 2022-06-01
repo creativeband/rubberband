@@ -135,6 +135,117 @@ function rubberband_widgets_init() {
 }
 add_action( 'widgets_init', 'rubberband_widgets_init' );
 
+/*************************************
+	Cb-00. Remove Head Link (RSD, Manifest)
+*************************************/
+function rubberband_removeHeadLinks() {
+	remove_action('wp_head', 'rsd_link');
+	remove_action('wp_head', 'wlwmanifest_link');
+}
+add_action('init', 'rubberband_removeHeadLinks');
+
+
+/*************************************
+	CB-01. Add Page Excerpt
+*************************************/
+add_post_type_support( 'page', 'excerpt' );
+
+/*************************************
+	CB-02. Archive Title
+*************************************/
+add_filter('get_the_archive_title', function ($title) {
+	if ( is_category() ) {
+		$title = single_cat_title( '', false );
+	} elseif ( is_tag() ) {
+		$title = single_tag_title( '', false );
+	} elseif ( is_author() ) {
+		$title = '<span class="vcard">' . get_the_author() . '</span>';
+	} elseif ( is_year() ) {
+		$title = get_the_date( _x( 'Y', 'yearly archives date format' ) );
+	} elseif ( is_month() ) {
+		$title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+	} elseif ( is_day() ) {
+		$title = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
+	} elseif ( is_post_type_archive() ) {
+		$title = post_type_archive_title( '', false );
+	} elseif ( is_tax() ) {
+		$title = single_term_title( '', false );
+	} else {
+		$title = __( 'Archives' );
+	}
+	return $title;
+});
+
+/*************************************
+	CB-03. Custom Default Error Page
+*************************************/
+add_filter('wp_die_handler', 'get_custom_die_handler' );
+
+function get_custom_die_handler() {
+	return 'custom_die_handler';
+}
+function custom_die_handler( $message, $title="", $args = array() ) {
+	require_once get_stylesheet_directory() . '/404.php';
+}
+
+/*************************************
+	CB-04. CB Pagination
+*************************************/
+function rubberband_pagination() {
+	global $wp_query;
+	$big = 999999999; // need an unlikely integer
+		echo paginate_links( array(
+		'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+		'format' => '?paged=%#%',
+		'current' => max( 1, get_query_var('paged') ),
+		'total' => $wp_query->max_num_pages
+	) );
+}
+
+/************************************************
+	CB-05. Add featured image directly to REST API
+************************************************/
+function rubberband_post_featured_image_json( $data, $post, $context ) {
+	$featured_image_id = $data->data['featured_media']; // get featured image id
+	$featured_image_url = wp_get_attachment_image_src( $featured_image_id, 'medium' ); // get url of the original size
+
+	if( $featured_image_url ) {
+		$data->data['featured_image_url'] = $featured_image_url[0];
+	}
+
+	return $data;
+}
+add_filter( 'rest_prepare_post', 'rubberband_post_featured_image_json', 10, 3 );
+
+function rubberband_prepare_rest_fi($data, $post, $request){
+	$_data = $data->data;
+
+	$thumbnail_id = get_post_thumbnail_id( $post->ID );
+	$thumbnailFull = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
+
+	$_data['fi_full'] = $thumbnailFull[0];
+	$data->data = $_data;
+
+	return $data;
+}
+add_filter('rest_prepare_work', 'rubberband_prepare_rest_fi', 10, 3);
+
+/*************************************
+	CB-06. Disable Autocomplete
+*************************************/
+function rubberband_login_form() {
+	echo <<<html
+<script>
+	document.getElementById( "user_pass" ).autocomplete = "off";
+</script>
+html;
+}
+
+add_action( 'login_form', 'rubberband_login_form' );
+
+
+
+
 /**
  * Enqueue scripts and styles.
  */

@@ -19,6 +19,8 @@ get_header();
 		<div class="inner">
 			<?php
 			if ( have_posts() ) :
+				
+				setPostViews(get_the_ID());
 	
 				if ( is_home() && ! is_front_page() ) :
 					?>

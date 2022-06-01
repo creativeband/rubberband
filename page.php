@@ -20,6 +20,8 @@ get_header();
 			<?php
 			while ( have_posts() ) :
 				the_post();
+				
+				setPostViews(get_the_ID());
 	
 				get_template_part( 'template-parts/content', 'page' );
 	

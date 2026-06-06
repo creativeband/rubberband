@@ -1,70 +1,108 @@
-[![Build Status](https://travis-ci.org/Automattic/_s.svg?branch=master)](https://travis-ci.org/Automattic/_s)
+# rubberband
 
-_s
-===
+> WordPress Starter Theme by [Creative Band](https://creative-band.com)  
+> Based on [Underscores (_s)](https://github.com/Automattic/_s) by Automattic
 
-Hi. I'm a starter theme called `_s`, or `underscores`, if you like. I'm a theme meant for hacking so don't use me as a Parent Theme. Instead try turning me into the next, most awesome, WordPress theme out there. That's what I'm here for.
+---
 
-My ultra-minimal CSS might make me look like theme tartare but that means less stuff to get in your way when you're designing your awesome theme. Here are some of the other more interesting things you'll find here:
+## 사용법
 
-* A modern workflow with a pre-made command-line interface to turn your project into a more pleasant experience.
-* A just right amount of lean, well-commented, modern, HTML5 templates.
-* A custom header implementation in `inc/custom-header.php`. Just add the code snippet found in the comments of `inc/custom-header.php` to your `header.php` template.
-* Custom template tags in `inc/template-tags.php` that keep your templates clean and neat and prevent code duplication.
-* Some small tweaks in `inc/template-functions.php` that can improve your theming experience.
-* A script at `js/navigation.js` that makes your menu a toggled dropdown on small screens (like your phone), ready for CSS artistry. It's enqueued in `functions.php`.
-* 2 sample layouts in `sass/layouts/` made using CSS Grid for a sidebar on either side of your content. Just uncomment the layout of your choice in `sass/style.scss`.
-Note: `.no-sidebar` styles are automatically loaded.
-* Smartly organized starter CSS in `style.css` that will help you to quickly get your design off the ground.
-* Full support for `WooCommerce plugin` integration with hooks in `inc/woocommerce.php`, styling override woocommerce.css with product gallery features (zoom, swipe, lightbox) enabled.
-* Licensed under GPLv2 or later. :) Use it to make something cool.
-
-Installation
----------------
-
-### Requirements
-
-`_s` requires the following dependencies:
-
-- [Node.js](https://nodejs.org/)
-- [Composer](https://getcomposer.org/)
-
-### Quick Start
-
-Clone or download this repository, change its name to something else (like, say, `megatherium-is-awesome`), and then you'll need to do a six-step find and replace on the name in all the templates.
-
-1. Search for `'_s'` (inside single quotations) to capture the text domain and replace with: `'megatherium-is-awesome'`.
-2. Search for `_s_` to capture all the functions names and replace with: `megatherium_is_awesome_`.
-3. Search for `Text Domain: _s` in `style.css` and replace with: `Text Domain: megatherium-is-awesome`.
-4. Search for <code>&nbsp;_s</code> (with a space before it) to capture DocBlocks and replace with: <code>&nbsp;Megatherium_is_Awesome</code>.
-5. Search for `_s-` to capture prefixed handles and replace with: `megatherium-is-awesome-`.
-6. Search for `_S_` (in uppercase) to capture constants and replace with: `MEGATHERIUM_IS_AWESOME_`.
-
-Then, update the stylesheet header in `style.css`, the links in `footer.php` with your own information and rename `_s.pot` from `languages` folder to use the theme's slug. Next, update or delete this readme.
-
-### Setup
-
-To start using all the tools that come with `_s`  you need to install the necessary Node.js and Composer dependencies :
-
-```sh
-$ composer install
-$ npm install
+```bash
+git clone https://github.com/creativeband/rubberband.git
+cd rubberband
+bash generator/generate.sh
 ```
 
-### Available CLI commands
+입력 예시:
 
-`_s` comes packed with CLI commands tailored for WordPress theme development :
+```
+프로젝트 이름 : 헤어온의원
+테마 슬러그   : hairon
+제작자 이름   : 크리에이티브밴드
+제작자 URL    : https://creative-band.com
+WP 경로       : /Applications/MAMP/htdocs
+```
 
-- `composer lint:wpcs` : checks all PHP files against [PHP Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/).
-- `composer lint:php` : checks all PHP files for syntax errors.
-- `composer make-pot` : generates a .pot file in the `languages/` directory.
-- `npm run compile:css` : compiles SASS files to css.
-- `npm run compile:rtl` : generates an RTL stylesheet.
-- `npm run watch` : watches all SASS files and recompiles them to css when they change.
-- `npm run lint:scss` : checks all SASS files against [CSS Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/css/).
-- `npm run lint:js` : checks all JavaScript files against [JavaScript Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/javascript/).
-- `npm run bundle` : generates a .zip archive for distribution, excluding development and system files.
+결과:
 
-Now you're ready to go! The next step is easy to say, but harder to do: make an awesome WordPress theme. :)
+```
+/Applications/MAMP/htdocs/hairon/wp-content/themes/hairon/
+```
 
-Good luck!
+---
+
+## 패키지 구조
+
+```
+rubberband/
+├── generator/
+│   └── generate.sh          ← 실행 진입점
+├── template/                ← 테마 소스 (여기서 직접 수정)
+│   ├── functions.php        ← require 진입점만
+│   ├── inc/
+│   │   ├── template-tags.php        (_s 원본)
+│   │   ├── template-functions.php   (_s 원본)
+│   │   ├── customizer.php           (_s 원본)
+│   │   ├── custom-header.php        (_s 원본)
+│   │   ├── cb-setup.php             (rubberband)
+│   │   ├── cb-enqueue.php           (rubberband)
+│   │   ├── cb-menus.php             (rubberband)
+│   │   ├── cb-archive.php           (rubberband)
+│   │   ├── cb-pagination.php        (rubberband)
+│   │   └── cb-dashboard.php         (rubberband)
+│   ├── template-parts/
+│   │   ├── archive/content.php
+│   │   ├── single/content.php
+│   │   ├── page/content.php
+│   │   ├── content.php              (_s 호환)
+│   │   ├── content-none.php         (_s 호환)
+│   │   ├── content-page.php         (_s 호환)
+│   │   ├── content-search.php       (_s 호환)
+│   │   └── common/
+│   │       ├── menu.php
+│   │       ├── search.php
+│   │       ├── share.php
+│   │       └── related.php
+│   └── js/
+│       ├── navigation.js            (_s 원본)
+│       └── creativeband.js          (커스텀)
+├── .gitignore
+├── CHANGELOG.md
+└── README.md
+```
+
+---
+
+## 슬러그 치환 규칙 (_s 컨벤션)
+
+| 패턴 | 용도 | 예시 (slug: hairon) |
+|---|---|---|
+| `rubberband_` | 함수명 | `hairon_` |
+| `'rubberband'` | 텍스트 도메인 | `'hairon'` |
+| `rubberband-` | 핸들 | `hairon-` |
+| `RUBBERBAND_` | 상수 | `HAIRON_` |
+| `Rubberband` | DocBlock | `Hairon` |
+
+---
+
+## 기본 포함 기능 (CB- 번호)
+
+| 번호 | 기능 | 파일 |
+|---|---|---|
+| CB-00 | 헤드 불필요 링크 제거 (RSD, WLW) | cb-setup.php |
+| CB-01 | Page Excerpt 지원 | cb-setup.php |
+| CB-02 | 아카이브 타이틀 접두어 제거 | cb-archive.php |
+| CB-03 | Custom 404 Error Handler | cb-setup.php |
+| CB-04 | 페이지네이션 | cb-pagination.php |
+| CB-05 | REST API Featured Image URL | cb-setup.php |
+| CB-06 | 로그인 자동완성 비활성화 | cb-setup.php |
+| CB-07 | 포스트 조회수 카운트 | cb-setup.php |
+| — | 네비게이션 4종 | cb-menus.php |
+| — | 관리자 대시보드 위젯 2종 | cb-dashboard.php |
+
+---
+
+## 라이선스
+
+GNU General Public License v2 or later  
+Based on Underscores (_s) © Automattic, Inc.

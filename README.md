@@ -16,11 +16,11 @@ bash generator/generate.sh
 입력 예시:
 
 ```
-프로젝트 이름 : 헤어온의원
-테마 슬러그   : hairon
-제작자 이름   : 크리에이티브밴드
+프로젝트 이름 : Rubber Band
+테마 슬러그   : rubberband
+제작자 이름   : Creative Band
 제작자 URL    : https://creative-band.com
-WP 경로       : /Applications/MAMP/htdocs
+WP 경로       : /Sites/
 ```
 
 결과:
